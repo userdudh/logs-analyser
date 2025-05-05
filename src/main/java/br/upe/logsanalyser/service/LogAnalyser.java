@@ -76,4 +76,29 @@ public class LogAnalyser {
             System.out.printf("Média: %.2f bytes\n", media);
         }
     }
+
+    private void salvarEmArquivo(String nomeArquivo, List<String> linhas) {
+    try {
+        File pasta = new File("Análise");
+        if (!pasta.exists()) {
+            pasta.mkdirs(); // cria a pasta se não existir
+        }
+
+        File arquivo = new File(pasta, nomeArquivo);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo));
+
+        for (String linha : linhas) {
+            writer.write(linha);
+            writer.newLine();
+        }
+
+        writer.close();
+        System.out.println("Arquivo salvo em: " + arquivo.getAbsolutePath());
+
+    } catch (IOException e) {
+        System.err.println("Erro ao salvar o arquivo: " + e.getMessage());
+    }
+}
+
+    
 }
