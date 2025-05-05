@@ -1,4 +1,4 @@
-package br.upe.logsanalyser;
+package br.upe.logsanalyser.model;
 
 import java.util.List;
 import java.util.Scanner;
@@ -6,9 +6,10 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
+        LogReader leitor = new LogReader();
         int opcaoEscolhida;
 
-        List<LogEntry> logs = LeitorDeLog.lerLogs("access.log");
+        List<LogEntry> logs = leitor.lerLogs("access.log");
 
         do {
             System.out.println("\n-------------------------------");
@@ -27,7 +28,7 @@ public class Main {
                 case 1:
                     System.out.println("=== Recursos grandes respondidos (acima de 10000 bytes) ===");
                     for (LogEntry log : logs) {
-                        if (log.getTamanho() > 10000) {
+                        if (log.getTamanhoResposta() > 10000) {
                             System.out.println(log);
                         }
                     }

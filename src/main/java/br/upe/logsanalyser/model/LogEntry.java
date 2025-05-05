@@ -2,12 +2,12 @@ package br.upe.logsanalyser.model;
 
 
 public class LogEntry {
-    private String ip;                 // Endereço IP do cliente que fez a requisição
-    private String dataHora;          // Data e hora da requisição
-    private String requisicao;        // Texto da requisição (ex: "GET /index.html HTTP/1.1")
-    private int status;               // Código de status HTTP da resposta (ex: 200, 404)
-    private int tamanhoResposta;      // Tamanho da resposta (em bytes)
-    private String navegadorCliente;  // Agente do usuário (ex: navegador ou sistema operacional)
+    private String ip;
+    private String dataHora;
+    private String requisicao;
+    private int status;
+    private int tamanhoResposta;
+    private String navegadorCliente;
 
 
     public LogEntry(String ip, String dataHora, String requisicao, int status, int tamanhoResposta, String navegadorCliente) {
