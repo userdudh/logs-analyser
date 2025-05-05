@@ -1,4 +1,7 @@
-package br.upe.logsanalyser.model;
+package br.upe.logsanalyser.app;
+
+import br.upe.logsanalyser.model.LogEntry;
+import br.upe.logsanalyser.service.LogReader;
 
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +12,7 @@ public class Main {
         LogReader leitor = new LogReader();
         int opcaoEscolhida;
 
-        List<LogEntry> logs = leitor.lerLogs("access.log");
+        List<LogEntry> logs = leitor.lerLogs("C:\\Users\\Duda\\Downloads\\logs-analyser\\src\\main\\java\\br\\upe\\logsanalyser\\resources\\access.log");
 
         do {
             System.out.println("\n-------------------------------");

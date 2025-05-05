@@ -1,4 +1,6 @@
-package br.upe.logsanalyser.model;
+package br.upe.logsanalyser.service;
+
+import br.upe.logsanalyser.model.LogEntry;
 
 import java.util.List;
 import java.util.Map;
