@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         LogReader leitor = new LogReader();
+        LogAnalyser analyser = new LogAnalyser(logs);
         int opcaoEscolhida;
 
         List<LogEntry> logs = leitor.lerLogs("C:\\Users\\Duda\\Downloads\\logs-analyser\\src\\main\\java\\br\\upe\\logsanalyser\\resources\\access.log");
@@ -29,66 +30,19 @@ public class Main {
 
             switch (opcaoEscolhida) {
                 case 1:
-                    System.out.println("=== Recursos grandes respondidos (acima de 10000 bytes) ===");
-                    for (LogEntry log : logs) {
-                        if (log.getTamanhoResposta() > 10000) {
-                            System.out.println(log);
-                        }
-                    }
+                    analyser.salvarRecursosGrandes();
                     break;
 
                 case 2:
-                    System.out.println("=== Requisições não respondidas (status 4xx ou 5xx) ===");
-                    for (LogEntry log : logs) {
-                        int status = log.getStatus();
-                        if (status >= 400 && status < 600) {
-                            System.out.println(log);
-                        }
-                    }
+                    analyser.salvarNaoRespondidosNovembro();
                     break;
 
                 case 3:
-                    System.out.println("=== Porcentagem de requisições por sistema operacional ===");
-
-                    int total = logs.size();
-                    int windows = 0;
-                    int linux = 0;
-                    int mac = 0;
-                    int outros = 0;
-
-                    for (LogEntry log : logs) {
-                        String agente = log.getNavegadorCliente().toLowerCase();
-
-                        if (agente.contains("windows")) {
-                            windows++;
-                        } else if (agente.contains("linux")) {
-                            linux++;
-                        } else if (agente.contains("mac")) {
-                            mac++;
-                        } else {
-                            outros++;
-                        }
-                    }
-
-                    System.out.println("Windows: " + (windows * 100.0 / total) + "%");
-                    System.out.println("Linux: " + (linux * 100.0 / total) + "%");
-                    System.out.println("Mac: " + (mac * 100.0 / total) + "%");
-                    System.out.println("Outros: " + (outros * 100.0 / total) + "%");
+                    analyser.mostrarSistemasOperacionais2021();
                     break;
 
                 case 4:
-                    System.out.println("=== Média de requisições POST ===");
-
-                    int totalPOST = 0;
-
-                    for (LogEntry log : logs) {
-                        if (log.getRequisicao().startsWith("POST")) {
-                            totalPOST++;
-                        }
-                    }
-
-                    System.out.println("Quantidade de requisições POST: " + totalPOST);
-                    System.out.println("Média: " + (double) totalPOST / logs.size());
+                    analyser.mostrarMediaPOST2021();
                     break;
 
                 case 0:
