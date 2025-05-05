@@ -1,78 +1,85 @@
 package br.upe.logsanalyser;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+
+public class LogEntry {
+    private String ip;                 // Endereço IP do cliente que fez a requisição
+    private String dataHora;          // Data e hora da requisição
+    private String requisicao;        // Texto da requisição (ex: "GET /index.html HTTP/1.1")
+    private int status;               // Código de status HTTP da resposta (ex: 200, 404)
+    private int tamanhoResposta;      // Tamanho da resposta (em bytes)
+    private String navegadorCliente;  // Agente do usuário (ex: navegador ou sistema operacional)
 
 
-public class LogAnalyser {
+    public LogEntry(String ip, String dataHora, String requisicao, int status, int tamanhoResposta, String navegadorCliente) {
+        this.ip = ip;
+        this.dataHora = dataHora;
+        this.requisicao = requisicao;
+        this.status = status;
+        this.tamanhoResposta = tamanhoResposta;
+        this.navegadorCliente = navegadorCliente;
+    }
 
-    private List<LogEntry> entradas;
+  
+    public String getIp() {
+        return ip;
+    }
 
+    public String getDataHora() {
+        return dataHora;
+    }
 
-    public LogAnalyser(List<LogEntry> entradas) {
-        this.entradas = entradas;
+    public String getRequisicao() {
+        return requisicao;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public int getTamanhoResposta() {
+        return tamanhoResposta;
+    }
+
+    public String getNavegadorCliente() {
+        return navegadorCliente;
+    }
+
+ 
+    public boolean foiRespondidaComSucesso() {
+        return status >= 200 && status < 300;
+    }
+
+    public boolean isPost() {
+        return requisicao != null && requisicao.toUpperCase().startsWith("POST");
     }
 
 
-    public void mostrarMaioresRespostas() {
-        System.out.println("\nAs 5 maiores respostas em bytes:");
-        entradas.stream()
-                .sorted((a, b) -> Integer.compare(b.getTamanhoResposta(), a.getTamanhoResposta()))
-                .limit(5)
-                .forEach(System.out::println);
-    }
-
-
-    public void mostrarNaoRespondidas() {
-        System.out.println("\nRequisições não respondidas com sucesso:");
-        for (LogEntry entrada : entradas) {
-            if (!entrada.foiRespondidaComSucesso()) {
-                System.out.println(entrada);
-            }
-        }
-    }
-
-
-    public void mostrarPorcentagemPorSistemaOperacional() {
-        System.out.println("\nPorcentagem de requisições por Sistema Operacional:");
-
-        Map<String, Integer> contagemSO = new HashMap<>();
-        int total = 0;
-
-        for (LogEntry entrada : entradas) {
-            String so = entrada.detectarSistemaOperacional();
-            contagemSO.put(so, contagemSO.getOrDefault(so, 0) + 1);
-            total++;
+    public String detectarSistemaOperacional() {
+        if (navegadorCliente == null) {
+            return "Desconhecido";
         }
 
-        for (Map.Entry<String, Integer> par : contagemSO.entrySet()) {
-            String so = par.getKey();
-            int quantidade = par.getValue();
-            double porcentagem = (quantidade * 100.0) / total;
-            System.out.printf("%s: %.2f%%\n", so, porcentagem);
-        }
-    }
+        String agente = navegadorCliente.toLowerCase();
 
-
-    public void mostrarMediaRequisicoesPOST() {
-        System.out.println("\nMédia de tamanho das respostas do tipo POST:");
-
-        int totalPost = 0;
-        int somaTamanhos = 0;
-
-        for (LogEntry entrada : entradas) {
-            if (entrada.isPost()) {
-                somaTamanhos += entrada.getTamanhoResposta();
-                totalPost++;
-            }
-        }
-
-        if (totalPost == 0) {
-            System.out.println("Nenhuma requisição POST encontrada.");
+        if (agente.contains("windows")) {
+            return "Windows";
+        } else if (agente.contains("linux")) {
+            return "Linux";
+        } else if (agente.contains("mac")) {
+            return "MacOS";
+        } else if (agente.contains("android")) {
+            return "Android";
+        } else if (agente.contains("iphone") || agente.contains("ios")) {
+            return "iOS";
         } else {
-            double media = (double) somaTamanhos / totalPost;
-            System.out.printf("Média: %.2f bytes\n", media);
+            return "Outro";
         }
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("%s - [%s] \"%s\" %d %d \"%s\"",
+                ip, dataHora, requisicao, status, tamanhoResposta, navegadorCliente);
     }
 }
