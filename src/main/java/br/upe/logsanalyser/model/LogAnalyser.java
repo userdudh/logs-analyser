@@ -4,25 +4,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-/**
- * Esta classe realiza a análise dos logs.
- * Ela utiliza uma lista de LogEntry para calcular os dados necessários.
- */
+
 public class LogAnalyser {
 
     private List<LogEntry> entradas;
 
-    /**
-     * Construtor que recebe a lista de entradas de log.
-     */
     public LogAnalyser(List<LogEntry> entradas) {
         this.entradas = entradas;
     }
 
-    /**
-     * Mostra as requisições com maior tamanho de resposta.
-     * Considera as maiores 5 por padrão.
-     */
+   
     public void mostrarMaioresRespostas() {
         System.out.println("\nAs 5 maiores respostas em bytes:");
         entradas.stream()
@@ -31,9 +22,7 @@ public class LogAnalyser {
                 .forEach(System.out::println);
     }
 
-    /**
-     * Mostra as requisições que não foram respondidas com sucesso (status diferente de 2xx).
-     */
+   
     public void mostrarNaoRespondidas() {
         System.out.println("\nRequisições não respondidas com sucesso:");
         for (LogEntry entrada : entradas) {
@@ -43,9 +32,7 @@ public class LogAnalyser {
         }
     }
 
-    /**
-     * Calcula e exibe a porcentagem de requisições por sistema operacional.
-     */
+
     public void mostrarPorcentagemPorSistemaOperacional() {
         System.out.println("\nPorcentagem de requisições por Sistema Operacional:");
 
@@ -66,9 +53,7 @@ public class LogAnalyser {
         }
     }
 
-    /**
-     * Calcula a média de tamanho das respostas do tipo POST.
-     */
+ 
     public void mostrarMediaRequisicoesPOST() {
         System.out.println("\nMédia de tamanho das respostas do tipo POST:");
 
