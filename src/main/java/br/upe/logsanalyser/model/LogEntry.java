@@ -1,4 +1,4 @@
-package br.upe.logsanalyser;
+package br.upe.logsanalyser.model;
 
 
 public class LogEntry {
