@@ -35,47 +35,48 @@ public class LogAnalyser {
     }
 
 
-    public void mostrarPorcentagemPorSistemaOperacional() {
-        System.out.println("\nPorcentagem de requisições por Sistema Operacional:");
+    public void mostrarSistemasOperacionais2021() {
+    System.out.println("\nPorcentagem de acessos por Sistema Operacional (2021):");
 
-        Map<String, Integer> contagemSO = new HashMap<>();
-        int total = 0;
+    Map<String, Integer> contagemSO = new HashMap<>();
+    int total = 0;
 
-        for (LogEntry entrada : entradas) {
-            String so = entrada.detectarSistemaOperacional();
-            contagemSO.put(so, contagemSO.getOrDefault(so, 0) + 1);
-            total++;
-        }
+    for (LogEntry entrada : entradas) {
+        if (!entrada.getDataHora().contains("2021")) continue;
 
-        for (Map.Entry<String, Integer> par : contagemSO.entrySet()) {
-            String so = par.getKey();
-            int quantidade = par.getValue();
-            double porcentagem = (quantidade * 100.0) / total;
-            System.out.printf("%s: %.2f%%\n", so, porcentagem);
-        }
-    }
+        String agente = entrada.getNavegadorCliente().toLowerCase();
+        String so;
 
- 
-    public void mostrarMediaRequisicoesPOST() {
-        System.out.println("\nMédia de tamanho das respostas do tipo POST:");
-
-        int totalPost = 0;
-        int somaTamanhos = 0;
-
-        for (LogEntry entrada : entradas) {
-            if (entrada.isPost()) {
-                somaTamanhos += entrada.getTamanhoResposta();
-                totalPost++;
-            }
-        }
-
-        if (totalPost == 0) {
-            System.out.println("Nenhuma requisição POST encontrada.");
+        if (agente.contains("android") || agente.contains("mobile")) {
+            so = "Mobile";
+        } else if (agente.contains("windows")) {
+            so = "Windows";
+        } else if (agente.contains("macintosh") || agente.contains("mac os")) {
+            so = "Macintosh";
+        } else if (agente.contains("ubuntu")) {
+            so = "Ubuntu";
+        } else if (agente.contains("fedora")) {
+            so = "Fedora";
+        } else if (agente.contains("x11")) {
+            so = "Outros Linux";
         } else {
-            double media = (double) somaTamanhos / totalPost;
-            System.out.printf("Média: %.2f bytes\n", media);
+            so = "Outros";
         }
+
+        contagemSO.put(so, contagemSO.getOrDefault(so, 0) + 1);
+        total++;
     }
+
+    List<String> linhas = new ArrayList<>();
+    for (Map.Entry<String, Integer> entry : contagemSO.entrySet()) {
+        double porcentagem = entry.getValue() * 100.0 / total;
+        String linha = String.format("%s: %.2f%%", entry.getKey(), porcentagem);
+        System.out.println(linha);
+        linhas.add(linha);
+    }
+
+    salvarEmArquivo("sistemasOperacionais.txt", linhas);
+}
 
     private void salvarEmArquivo(String nomeArquivo, List<String> linhas) {
     try {
@@ -100,5 +101,28 @@ public class LogAnalyser {
     }
 }
 
+    public void mostrarMediaPOST2021() {
+    System.out.println("\nMédia de tamanho das respostas do tipo POST (sucesso, 2021):");
+
+    int total = 0;
+    int somaTamanhos = 0;
+
+    for (LogEntry entrada : entradas) {
+        if (entrada.isPost() &&
+            entrada.foiRespondidaComSucesso() &&
+            entrada.getDataHora().contains("2021")) {
+
+            somaTamanhos += entrada.getTamanhoResposta();
+            total++;
+        }
+    }
+
+    if (total == 0) {
+        System.out.println("Nenhuma requisição POST com sucesso encontrada em 2021.");
+    } else {
+        double media = (double) somaTamanhos / total;
+        System.out.printf("Média: %.2f bytes\n", media);
+    }
+}
     
 }
