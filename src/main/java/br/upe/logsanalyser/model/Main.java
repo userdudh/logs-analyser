@@ -54,7 +54,7 @@ public class Main {
                     int outros = 0;
 
                     for (LogEntry log : logs) {
-                        String agente = log.getAgenteUsuario().toLowerCase();
+                        String agente = log.getNavegadorCliente().toLowerCase();
 
                         if (agente.contains("windows")) {
                             windows++;
