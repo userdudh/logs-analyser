@@ -2,6 +2,7 @@ package br.upe.logsanalyser.app;
 
 import br.upe.logsanalyser.model.LogEntry;
 import br.upe.logsanalyser.service.LogReader;
+import br.upe.logsanalyser.service.LogAnalyser;
 
 import java.util.List;
 import java.util.Scanner;
@@ -10,10 +11,13 @@ public class Main {
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         LogReader leitor = new LogReader();
-        LogAnalyser analyser = new LogAnalyser(logs);
-        int opcaoEscolhida;
 
+        
         List<LogEntry> logs = leitor.lerLogs("C:\\Users\\Duda\\Downloads\\logs-analyser\\src\\main\\java\\br\\upe\\logsanalyser\\resources\\access.log");
+
+        LogAnalyser analyser = new LogAnalyser(logs);
+
+        int opcaoEscolhida;
 
         do {
             System.out.println("\n-------------------------------");
@@ -30,19 +34,19 @@ public class Main {
 
             switch (opcaoEscolhida) {
                 case 1:
-                    LogAnalyser.salvarRecursosGrandes();
+                    analyser.mostrarMaioresRespostas();
                     break;
 
                 case 2:
-                    LogAnalyser.salvarNaoRespondidosNovembro();
+                    analyser.mostrarNaoRespondidas();
                     break;
 
                 case 3:
-                    LogAnalyser.mostrarSistemasOperacionais2021();
+                    analyser.mostrarSistemasOperacionais2021();
                     break;
 
                 case 4:
-                    LogAnalyser.mostrarMediaPOST2021();
+                    analyser.mostrarMediaPOST2021();
                     break;
 
                 case 0:
