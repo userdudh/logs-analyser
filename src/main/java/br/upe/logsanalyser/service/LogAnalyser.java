@@ -2,10 +2,14 @@ package br.upe.logsanalyser.service;
 
 import br.upe.logsanalyser.model.LogEntry;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter; 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-
+import java.util.ArrayList; 
 
 public class LogAnalyser {
 
