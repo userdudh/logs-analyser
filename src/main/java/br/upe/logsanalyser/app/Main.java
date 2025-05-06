@@ -13,7 +13,7 @@ public class Main {
         LogReader leitor = new LogReader();
 
         
-        List<LogEntry> logs = leitor.lerLogs("C:\\Users\\Duda\\Downloads\\logs-analyser\\src\\main\\java\\br\\upe\\logsanalyser\\resources\\access.log");
+        List<LogEntry> logs = leitor.lerLogs("C:\\Users\\Duda\\Documents\\logs-analyser\\logs-analyser\\src\\main\\java\\br\\upe\\logsanalyser\\resources\\access.log");
 
         LogAnalyser analyser = new LogAnalyser(logs);
 
