@@ -21,23 +21,35 @@ public class LogAnalyser {
 
    
     public void mostrarMaioresRespostas() {
-        System.out.println("\nAs 5 maiores respostas em bytes:");
-        entradas.stream()
-                .sorted((a, b) -> Integer.compare(b.getTamanhoResposta(), a.getTamanhoResposta()))
-                .limit(5)
-                .forEach(System.out::println);
+    System.out.println("\nAs 5 maiores respostas em bytes:");
+
+    List<LogEntry> top5 = entradas.stream()
+            .sorted((a, b) -> Integer.compare(b.getTamanhoResposta(), a.getTamanhoResposta()))
+            .limit(5)
+            .toList();
+
+    List<String> linhas = new ArrayList<>();
+    for (LogEntry entrada : top5) {
+        System.out.println(entrada);
+        linhas.add(entrada.toString());
     }
 
+    salvarEmArquivo("maioresRespostas.txt", linhas);
+}
    
     public void mostrarNaoRespondidas() {
-        System.out.println("\nRequisições não respondidas com sucesso:");
-        for (LogEntry entrada : entradas) {
-            if (!entrada.foiRespondidaComSucesso()) {
-                System.out.println(entrada);
-            }
+    System.out.println("\nRequisições não respondidas com sucesso:");
+
+    List<String> linhas = new ArrayList<>();
+    for (LogEntry entrada : entradas) {
+        if (!entrada.foiRespondidaComSucesso()) {
+            System.out.println(entrada);
+            linhas.add(entrada.toString());
         }
     }
 
+    salvarEmArquivo("naoRespondidas.txt", linhas);
+}
 
     public void mostrarSistemasOperacionais2021() {
     System.out.println("\nPorcentagem de acessos por Sistema Operacional (2021):");
