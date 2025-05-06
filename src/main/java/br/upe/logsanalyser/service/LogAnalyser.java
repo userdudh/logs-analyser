@@ -21,29 +21,31 @@ public class LogAnalyser {
 
    
     public void mostrarMaioresRespostas() {
-    System.out.println("\nAs 5 maiores respostas em bytes:");
+        System.out.println("\nRequisições com resposta bem-sucedida e objetos > 2000 bytes");
 
-    List<LogEntry> top5 = entradas.stream()
-            .sorted((a, b) -> Integer.compare(b.getTamanhoResposta(), a.getTamanhoResposta()))
-            .limit(5)
-            .toList();
+        List<String> linhas = new ArrayList<>();
 
-    List<String> linhas = new ArrayList<>();
-    for (LogEntry entrada : top5) {
-        System.out.println(entrada);
-        linhas.add(entrada.toString());
+        for (LogEntry entrada : entradas) {
+            int codigo = entrada.getStatus();
+            int tamanho = entrada.getTamanhoResposta();
+
+            if (codigo >= 200 && codigo < 300 && tamanho > 2000) {
+                String linha = String.format("%d %d %s", codigo, tamanho, entrada.getIp());
+                //System.out.println(linha);
+                linhas.add(linha);
+            }
+        }
+
+        salvarEmArquivo("recursosGrandes.txt", linhas);
     }
-
-    salvarEmArquivo("maioresRespostas.txt", linhas);
-}
    
     public void mostrarNaoRespondidas() {
-    System.out.println("\nRequisições não respondidas com sucesso:");
+    System.out.println("\nRequisições não respondidas com sucesso");
 
     List<String> linhas = new ArrayList<>();
     for (LogEntry entrada : entradas) {
         if (!entrada.foiRespondidaComSucesso()) {
-            System.out.println(entrada);
+            //System.out.println(entrada);
             linhas.add(entrada.toString());
         }
     }
@@ -52,13 +54,14 @@ public class LogAnalyser {
 }
 
     public void mostrarSistemasOperacionais2021() {
-    System.out.println("\nPorcentagem de acessos por Sistema Operacional (2021):");
+
+        System.out.println("\nPorcentagem de acessos por Sistema Operacional (2021)");
 
     Map<String, Integer> contagemSO = new HashMap<>();
     int total = 0;
 
     for (LogEntry entrada : entradas) {
-        if (!entrada.getDataHora().contains("2021")) continue;
+        if (!entrada.getDataHora().contains("2021:")) continue;
 
         String agente = entrada.getNavegadorCliente().toLowerCase();
         String so;
@@ -87,7 +90,7 @@ public class LogAnalyser {
     for (Map.Entry<String, Integer> entry : contagemSO.entrySet()) {
         double porcentagem = entry.getValue() * 100.0 / total;
         String linha = String.format("%s: %.2f%%", entry.getKey(), porcentagem);
-        System.out.println(linha);
+        //System.out.println(linha);
         linhas.add(linha);
     }
 
