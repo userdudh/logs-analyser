@@ -21,12 +21,19 @@ public class LogReader {
                     String[] dadosIniciais = partes[0].trim().split(" ");
                     String ip = dadosIniciais[0];
 
-                    // Captura data e hora entre colchetes (ex: [10/Oct/2023:13:55:36 -0300])
                     String dataHora = linha.substring(linha.indexOf('[') + 1, linha.indexOf(']'));
 
                     String requisicao = partes[1];
-                    int status = Integer.parseInt(partes[2].trim().split(" ")[0]);
-                    int tamanho = Integer.parseInt(partes[2].trim().split(" ")[1]);
+
+                    String[] statusETamanho = partes[2].trim().split(" ");
+                    int status = Integer.parseInt(statusETamanho[0]);
+
+                    int tamanho = 0;
+                    try {
+                        tamanho = Integer.parseInt(statusETamanho[1]);
+                    } catch (NumberFormatException e) {
+                    }
+
                     String agente = partes.length >= 6 ? partes[5] : "Desconhecido";
 
                     LogEntry log = new LogEntry(ip, dataHora, requisicao, status, tamanho, agente);
@@ -34,8 +41,8 @@ public class LogReader {
                 }
             }
 
-
             br.close();
+
         } catch (Exception e) {
             System.out.println("Erro ao ler o arquivo: " + e.getMessage());
         }
