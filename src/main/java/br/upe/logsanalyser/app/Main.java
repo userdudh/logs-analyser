@@ -30,19 +30,19 @@ public class Main {
 
             switch (opcaoEscolhida) {
                 case 1:
-                    analyser.salvarRecursosGrandes();
+                    LogAnalyser.salvarRecursosGrandes();
                     break;
 
                 case 2:
-                    analyser.salvarNaoRespondidosNovembro();
+                    LogAnalyser.salvarNaoRespondidosNovembro();
                     break;
 
                 case 3:
-                    analyser.mostrarSistemasOperacionais2021();
+                    LogAnalyser.mostrarSistemasOperacionais2021();
                     break;
 
                 case 4:
-                    analyser.mostrarMediaPOST2021();
+                    LogAnalyser.mostrarMediaPOST2021();
                     break;
 
                 case 0:
